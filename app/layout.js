@@ -13,9 +13,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" data-theme="forest">
-      <body className={inter.className}>
+      <body className={`${inter.className} max-h-screen overflow-hidden`}>
         <SessionProvider>
-          <div className='flex'>
+          <div className='flex min-h-screen'>
             <DashboardMenu />
             <section className='w-full'>
               <Navbar />

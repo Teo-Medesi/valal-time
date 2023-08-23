@@ -8,13 +8,14 @@ const SessionProvider = ({children}) => {
     const [session, setSession] = useState({});
     
     useEffect(() => {
-        const unsubscribe = supabase.auth.onAuthStateChange((event, data) => {
+        const { data} = supabase.auth.onAuthStateChange((event, data) => {
             if (Object.keys(session).length === 0) setSession(data);
-            if (process.env.NEXT_PUBLIC_DEVELOPMENT) console.log(`EVENT: ${event}, user: ${session?.user?.email}`);
+            if (process.env.NEXT_PUBLIC_DEVELOPMENT) console.log(`EVENT: ${event}, user: ${data?.user?.email}`);
         })
 
         return () => {
-            unsubscribe();
+            // remove auth listener
+            data.subscription.unsubscribe();
         }
     }, [])
 
