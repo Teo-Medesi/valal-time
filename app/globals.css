@@ -25,3 +25,15 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.padding-x {
+  @apply px-3 md:px-6;
+}
+
+.padding-y {
+  @apply py-6 md:py-9;
+}
+
+.focus-none {
+  outline-style: none !important;
+}
