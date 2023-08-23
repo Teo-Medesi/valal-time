@@ -4,6 +4,7 @@ import Timer from "./Timer";
 import Tasks from "./Tasks";
 import TasksTodo from "./TasksTodo";
 import Navbar from "./Navbar";
+import BranchSelectBox from "./BranchSelectBox";
 
 export {
     DashboardMenu,
@@ -11,5 +12,6 @@ export {
     Timer,
     Tasks,
     TasksTodo,
-    Navbar
+    Navbar,
+    BranchSelectBox
 }
