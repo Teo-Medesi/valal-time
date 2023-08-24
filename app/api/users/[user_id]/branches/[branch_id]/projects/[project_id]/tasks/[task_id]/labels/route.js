@@ -2,10 +2,10 @@ import supabase from "@/lib/supabase-server.config";
 import { NextResponse } from "next/server";
 
 export async function GET(request, { params }) {
-    const {data, error} = await supabase.from("branches").select("*").eq("user_id", params.user_id);
+    const {data, error} = await supabase.from("task_labels").select("*").eq("task_id", params.task_id);
     if (error) return NextResponse.json({error: error?.message}, {status: 400});
 
-    return NextResponse.json({message: "successfully retrieved branches", data}, {status: 200});
+    return NextResponse.json({message: "successfully retrieved tasks", data}, {status: 200});
     
 }
 
@@ -14,8 +14,8 @@ export async function POST(request, { params }) {
 
     if (!body) return NextResponse.json({error: "missing body"}, {status: 400})
 
-    const {data, error} = await supabase.from("branches").insert({name: body.name, user_id: params.user_id});
+    const {data, error} = await supabase.from("task_labels").insert({name: body?.name, task_id: params.task_id});
     if (error) return NextResponse.json({error: error?.message}, {status: 400});
 
-    return NextResponse.json({message: `successfully created new branch "${body.name}"`}, {status: 201});
+    return NextResponse.json({message: "successfully created new task label"}, {status: 201});
 }

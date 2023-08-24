@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(request, { params }) {
     const {data, error} = await supabase.from("tasks").select("*").eq("project_id", params.project_id);
-    if (error) return NextResponse.json({error: error?.message}, {status: error?.code});
+    if (error) return NextResponse.json({error: error?.message}, {status: 400});
 
     return NextResponse.json({message: "successfully retrieved tasks", data}, {status: 200});
     
