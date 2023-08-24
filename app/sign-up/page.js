@@ -14,11 +14,12 @@ export default function SignUp() {
         const email = data.get("email");
         const password = data.get("password");
 
-       const { error } = await supabase.auth.signUp({
+        
+        const { error } = await supabase.auth.signUp({
             email, 
             password
         }) 
-
+        
         if (error) setError(error?.message);
         else router.push("/sign-up/confirmation");
     }

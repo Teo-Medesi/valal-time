@@ -5,6 +5,7 @@ import Tasks from "./Tasks";
 import TasksTodo from "./TasksTodo";
 import Navbar from "./Navbar";
 import BranchSelectBox from "./BranchSelectBox";
+import SignOutButton from "./SignOutButton";
 
 export {
     DashboardMenu,
@@ -13,5 +14,6 @@ export {
     Tasks,
     TasksTodo,
     Navbar,
-    BranchSelectBox
+    BranchSelectBox,
+    SignOutButton
 }

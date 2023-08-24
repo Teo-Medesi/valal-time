@@ -5,11 +5,12 @@ import { createContext, useContext, useEffect, useState } from "react";
 const SessionContext = createContext();
 
 const SessionProvider = ({children}) => {
-    const [session, setSession] = useState({});
+    const [session, setSession] = useState({signOut: () => supabase.auth.signOut({scope: "global"})});
     
     useEffect(() => {
         const { data} = supabase.auth.onAuthStateChange((event, data) => {
-            if (Object.keys(session).length === 0) setSession(data);
+            if (Object.keys(session).length === 0) setSession(current => { return {...current, data}});
+            
             if (process.env.NEXT_PUBLIC_DEVELOPMENT) console.log(`EVENT: ${event}, user: ${data?.user?.email}`);
         })
 
