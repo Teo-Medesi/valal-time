@@ -1,7 +1,7 @@
 "use client"
 import { useState } from "react";
 
-const Tasks = () => {
+const Tasks = ({tasks}) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (

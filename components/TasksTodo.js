@@ -1,5 +1,5 @@
 
-const TasksTodo = () => {
+const TasksTodo = ({todos}) => {
   return (
     <div className="flex flex-col w-full">
       <div className="flex justify-between text-neutral-content">

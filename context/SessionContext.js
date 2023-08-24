@@ -9,7 +9,7 @@ const SessionProvider = ({children}) => {
     
     useEffect(() => {
         const { data} = supabase.auth.onAuthStateChange((event, data) => {
-            if (Object.keys(session).length === 0) setSession(current => { return {...current, data}});
+            setSession(current => { return {...current, session: data}});
             
             if (process.env.NEXT_PUBLIC_DEVELOPMENT) console.log(`EVENT: ${event}, user: ${data?.user?.email}`);
         })

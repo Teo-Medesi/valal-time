@@ -1,16 +1,16 @@
 "use client"
-import { useSession } from "@/context/SessionContext";
 import { useRef, useState } from "react"
+import Branch from "./Branch";
 
-const BranchSelectBox = () => {
+const BranchSelectBox = ({branches}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSuccessAlertOpen, setIsSuccessAlertOpen] = useState(false);
   const [newProjectName, setNewProjectName] = useState("");
   const inputRef = useRef();
-  
-  const { user } = useSession();
 
   const handleOpen = () => {
+    console.log(branches);
+    
     if (!isOpen) inputRef.current.focus();
     setIsOpen(current => !current);
   }
@@ -37,7 +37,7 @@ const BranchSelectBox = () => {
             <input onChange={event => setNewProjectName(event.target.value)} ref={inputRef} type="text" placeholder="search or create new project..." className="input focus-none text-white w-full input-bordered rounded-l-full" />
             <div onClick={createNewProject} className="btn p-4 rounded-r-full btn-secondary rounded-none border-none"><svg className="w-full h-full" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#161212"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 12H20M12 4V20" stroke="#161212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg></div>
           </div>
-          <p>No branches created yet!</p>
+          {branches?.map(branch => <Branch key={branch?.id} branch={branch} />)}
         </div>
       </div>
       <div className="absolute pointer-events-none w-screen h-screen left-0 bottom-0 flex justify-center items-end padding-y"><div class={`alert alert-success w-max h-max transition-all duration-1000 opacity-0 ${isSuccessAlertOpen && "opacity-100"}`}>

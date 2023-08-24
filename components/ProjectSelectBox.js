@@ -2,7 +2,7 @@
 import { useSession } from "@/context/SessionContext";
 import { useRef, useState } from "react"
 
-const ProjectSelectBox = () => {
+const ProjectSelectBox = ({projects}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSuccessAlertOpen, setIsSuccessAlertOpen] = useState(false);
   const [newProjectName, setNewProjectName] = useState("");
