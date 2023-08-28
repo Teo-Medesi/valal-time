@@ -1,5 +1,6 @@
 "use client"
 import supabase from "@/lib/supabase-client.config";
+import { revalidatePath } from "@/services";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -20,6 +21,8 @@ export default function SignUp() {
             password
         }) 
         
+        revalidatePath("/");
+
         if (error) setError(error?.message);
         else router.push("/sign-up/confirmation");
     }

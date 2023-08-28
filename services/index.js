@@ -1,3 +1,10 @@
+"use server";
+
+import { revalidatePath as revalidate } from "next/cache";
+
+const revalidatePath = async (path) => {
+    revalidate(path);
+}
 
 const getBranches = async (user_id, provider_token) => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/users/${user_id}/branches`, {
@@ -43,6 +50,7 @@ export {
     getProjects,
     getTasks,
     getTodos,
-    getLabels
+    getLabels,
+    revalidatePath
 }
 

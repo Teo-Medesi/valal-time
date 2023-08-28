@@ -11,6 +11,7 @@ import Task from "./Task";
 import Project from "./Project";
 import Todo from "./Todo";
 import Label from "./Label";
+import Loading from "./Loading";
 
 export {
     DashboardMenu,
@@ -25,5 +26,6 @@ export {
     Task,
     Project,
     Todo,
-    Label
+    Label,
+    Loading
 }
