@@ -10,7 +10,7 @@ const getBranches = async (user_id) => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/users/${user_id}/branches`, {headers: headers()});
     const { data } = await response.json();
 
-    return data;
+    return data || [];
 }
 
 const getProjects = async (user_id, branch_id) => {
