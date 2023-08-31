@@ -9,50 +9,46 @@ const ProjectSelectBox = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSuccessAlertOpen, setIsSuccessAlertOpen] = useState(false);
   const [newProjectName, setNewProjectName] = useState("");
-  const [projects, setProjects] = useState([]);
+  const [newProjectDescription, setNewProjectDescription] = useState("");
 
   const inputRef = useRef();
 
   const { session: { user } } = useSession();
-  const { project, branch, setProject } = useBranch();
+  const { projects, selectedProject, selectedBranch, revalidate } = useBranch();
 
   const handleOpen = () => {
     if (!isOpen && inputRef?.current) inputRef.current.focus();
     setIsOpen(current => !current);
   }
 
-  useEffect(() => {
-    if (branch?.id && user?.id) fetchProjects();
-  }, [branch])
-
-  const fetchProjects = async () => {
-    console.log(user?.id, branch?.id);
-    const projects = await getProjects(user?.id, branch?.id);
-
-    console.log("projects", projects);
-    setProjects(projects);
-  }
-
   const createNewProject = async () => {
-    setIsSuccessAlertOpen(true);
-    setTimeout(() => {
-      setIsSuccessAlertOpen(false);
-    }, 4000)
+    if (!user?.id && !newProjectName) return;
 
-    await fetch(`/api/users/${user?.id}/projects`, {
+    const response = await fetch(`/api/users/${user?.id}/branches/${selectedBranch.id}/projects`, {
       method: "POST",
-      body: JSON.stringify({ name: newProjectName })
-    })
+      body: JSON.stringify({ name: newProjectName, description: newProjectDescription }),
+    });
+
+    if (response.ok) {
+      await revalidate("projects");
+
+      inputRef.current.value = "";
+      setIsSuccessAlertOpen(true);
+
+      setTimeout(() => {
+        setIsSuccessAlertOpen(false);
+      }, 4000)
+    }
   }
 
   return (
     <>
       <div className={`collapse collapse-arrow md:w-1/4 border-secondary border btn-outline btn-secondary w-full transition-all ${isOpen && "bg-secondary-focus !text-black md:!w-1/2"}`}>
         <input type="checkbox" onClick={handleOpen} />
-        <div className="collapse-title">{project?.name || "Project"}</div>
+        <div className="collapse-title">{selectedProject?.name || "Project"}</div>
         <div className="collapse-content flex flex-col gap-4">
           {
-            branch?.name
+            selectedBranch?.name
               ?
               <>
                 <div className="flex w-full">
@@ -62,10 +58,10 @@ const ProjectSelectBox = () => {
                 {
                   projects?.length === 0
                     ?
-                      <p>No projects created yet!</p>
+                    <p>No projects created yet!</p>
                     :
                     <>
-                      {projects?.map(element => <Project key={element?.id} isSelected={(project?.name === element?.name)} project={element} />)}
+                      {projects?.map(element => <Project key={element?.id} isSelected={(selectedProject?.id === element?.id)} project={element} />)}
                     </>
                 }
               </>

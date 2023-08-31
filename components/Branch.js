@@ -2,13 +2,13 @@
 import { useBranch } from '@/context/BranchContext'
 import React from 'react'
 
-const Branch = ({branch, isSelected}) => {  
-  const { setBranch } = useBranch();
+const Branch = ({ branch, isSelected }) => {
+  const { setSelectedBranch } = useBranch();
 
   const handleClick = () => {
-    setBranch(branch)
+    setSelectedBranch(branch);
   }
-  
+
   return (
     <div onClick={handleClick} data-tip={branch?.description} className={`btn btn-primary !text-black flex justify-between ${isSelected ? "btn-primary" : "btn-outline"} ${branch?.description && "tooltip tooltip-top"}`}>
       <p>{branch?.name}</p>

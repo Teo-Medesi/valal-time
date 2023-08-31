@@ -1,13 +1,13 @@
 import { useBranch } from '@/context/BranchContext';
 import React from 'react'
 
-const Project = ({project, isSelected}) => {  
-  const { setProject } = useBranch();
+const Project = ({ project, isSelected }) => {
+  const { setSelectedProject } = useBranch();
 
   const handleClick = () => {
-    setProject(project)
+    setSelectedProject(project)
   }
-  
+
   return (
     <div onClick={handleClick} className={`btn btn-primary !text-black flex justify-between ${isSelected ? "btn-primary" : "btn-outline"}`}>
       <p>{project?.name}</p>
