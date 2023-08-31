@@ -1,43 +1,54 @@
 "use client"
 import { useBranch } from "@/context/BranchContext";
-import { useEffect, useRef, useState } from "react"
+import { useSession } from "@/context/SessionContext";
+import { revalidatePath } from "@/services";
+import { useRef, useState } from "react"
 import Branch from "./Branch";
 
-const BranchSelectBox = ({branches}) => {
+const BranchSelectBox = ({ branches, revalidate }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSuccessAlertOpen, setIsSuccessAlertOpen] = useState(false);
-  const [newProjectName, setNewProjectName] = useState("");
+  const [newBranchName, setNewBranchName] = useState("");
+  const [newBranchDescription, setNewBranchDescription] = useState("");
   const inputRef = useRef();
-  
-  const { branch: {branch} } = useBranch();
 
-  const handleOpen = () => {    
+  const { branch } = useBranch();
+  const { session: { user } } = useSession();
+
+  const handleOpen = () => {
     if (!isOpen) inputRef.current.focus();
     setIsOpen(current => !current);
-    console.log(branch)
   }
 
-  const createNewProject = async () => {
-    setIsSuccessAlertOpen(true);
-    setTimeout(() => {
-      setIsSuccessAlertOpen(false);
-    }, 4000)
-
-    await fetch(`/api/users/${user?.id}/projects`, {
+  const createNewBranch = async () => {
+    if (!user?.id && !newBranchName) return;
+    
+    const response = await fetch(`/api/users/${user?.id}/branches`, {
       method: "POST",
-      body: JSON.stringify({name: newProjectName})
-    })    
-  } 
+      body: JSON.stringify({ name: newBranchName, description: newBranchDescription }),
+    });
+
+    if (response.ok) {
+      revalidate();
+      setIsSuccessAlertOpen(true);
+      
+      setTimeout(() => {
+        setIsSuccessAlertOpen(false);
+      }, 4000)
+    }
+
+
+  }
 
   return (
     <>
       <div className={`collapse collapse-arrow md:w-1/4 border-neutral border btn-outline btn-neutral w-full transition-all ${isOpen && "bg-neutral-content !text-black md:!w-1/2"}`}>
         <input type="checkbox" onClick={handleOpen} />
-        <div className="collapse-title">{branch?.name || "Branch"}</div>
+        <div className={`collapse-title ${(branch?.name && !isOpen) && "text-primary"}`}>{branch?.name || "Branch"}</div>
         <div className="collapse-content flex flex-col gap-4">
           <div className="flex w-full">
-            <input onChange={event => setNewProjectName(event.target.value)} ref={inputRef} type="text" placeholder="search or create new project..." className="input focus-none text-white w-full input-bordered rounded-l-full" />
-            <div onClick={createNewProject} className="btn p-4 rounded-r-full btn-secondary rounded-none border-none"><svg className="w-full h-full" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#161212"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 12H20M12 4V20" stroke="#161212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg></div>
+            <input onChange={event => setNewBranchName(event.target.value)} ref={inputRef} type="text" placeholder="search or create new branch..." className="input focus-none text-white w-full input-bordered rounded-l-full" />
+            <div tabIndex={0} onClick={createNewBranch} className="btn p-4 rounded-r-full btn-secondary rounded-none border-none"><svg className="w-full h-full" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#161212"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 12H20M12 4V20" stroke="#161212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg></div>
           </div>
           {branches?.map(element => <Branch key={element?.id} isSelected={(branch?.name === element?.name)} branch={element} />)}
         </div>

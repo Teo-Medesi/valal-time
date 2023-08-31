@@ -6,13 +6,12 @@ const Branch = ({branch, isSelected}) => {
   const { setBranch } = useBranch();
 
   const handleClick = () => {
-    setBranch(current => { return {...current, branch }})
+    setBranch(branch)
   }
   
   return (
-    <div onClick={handleClick} className={`btn btn-primary !text-black flex justify-between ${isSelected ? "btn-primary" : "btn-outline"}`}>
+    <div onClick={handleClick} data-tip={branch?.description} className={`btn btn-primary !text-black flex justify-between ${isSelected ? "btn-primary" : "btn-outline"} ${branch?.description && "tooltip tooltip-top"}`}>
       <p>{branch?.name}</p>
-      <p>{branch?.description}</p>
       <p>{branch?.total_time_tracked || "0h 0m"}</p>
     </div>
   )

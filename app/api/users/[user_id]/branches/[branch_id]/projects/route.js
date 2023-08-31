@@ -14,7 +14,7 @@ export async function POST(request, { params }) {
 
     if (!body) return NextResponse.json({error: "missing body"}, {status: 400})
 
-    const {data, error} = await supabase.from("projects").insert({name: body.name, branch_id: params.branch_id});
+    const {data, error} = await supabase.from("projects").insert({name: body?.name, description: body?.description, branch_id: params.branch_id});
     if (error) return NextResponse.json({error: error?.message}, {status: 400});
 
     return NextResponse.json({message: "successfully created new project"}, {status: 201});

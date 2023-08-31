@@ -1,18 +1,36 @@
 "use client"
+import { useBranch } from "@/context/BranchContext";
 import { useSession } from "@/context/SessionContext";
-import { useRef, useState } from "react"
+import { getProjects } from "@/services";
+import { useEffect, useRef, useState } from "react"
+import Project from "./Project";
 
-const ProjectSelectBox = ({projects}) => {
+const ProjectSelectBox = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSuccessAlertOpen, setIsSuccessAlertOpen] = useState(false);
   const [newProjectName, setNewProjectName] = useState("");
+  const [projects, setProjects] = useState([]);
+
   const inputRef = useRef();
-  
-  const { user } = useSession();
+
+  const { session: { user } } = useSession();
+  const { project, branch, setProject } = useBranch();
 
   const handleOpen = () => {
-    if (!isOpen) inputRef.current.focus();
+    if (!isOpen && inputRef?.current) inputRef.current.focus();
     setIsOpen(current => !current);
+  }
+
+  useEffect(() => {
+    if (branch?.id && user?.id) fetchProjects();
+  }, [branch])
+
+  const fetchProjects = async () => {
+    console.log(user?.id, branch?.id);
+    const projects = await getProjects(user?.id, branch?.id);
+
+    console.log("projects", projects);
+    setProjects(projects);
   }
 
   const createNewProject = async () => {
@@ -23,21 +41,40 @@ const ProjectSelectBox = ({projects}) => {
 
     await fetch(`/api/users/${user?.id}/projects`, {
       method: "POST",
-      body: JSON.stringify({name: newProjectName})
-    })    
-  } 
+      body: JSON.stringify({ name: newProjectName })
+    })
+  }
 
   return (
     <>
       <div className={`collapse collapse-arrow md:w-1/4 border-secondary border btn-outline btn-secondary w-full transition-all ${isOpen && "bg-secondary-focus !text-black md:!w-1/2"}`}>
         <input type="checkbox" onClick={handleOpen} />
-        <div className="collapse-title">Project</div>
+        <div className="collapse-title">{project?.name || "Project"}</div>
         <div className="collapse-content flex flex-col gap-4">
-          <div className="flex w-full">
-            <input onChange={event => setNewProjectName(event.target.value)} ref={inputRef} type="text" placeholder="search or create new project..." className="input focus-none text-white w-full input-bordered rounded-l-full" />
-            <div onClick={createNewProject} className="btn p-4 rounded-r-full btn-secondary rounded-none border-none"><svg className="w-full h-full" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#161212"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 12H20M12 4V20" stroke="#161212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg></div>
-          </div>
-          <p>No projects created yet!</p>
+          {
+            branch?.name
+              ?
+              <>
+                <div className="flex w-full">
+                  <input onChange={event => setNewProjectName(event.target.value)} ref={inputRef} type="text" placeholder="search or create new project..." className="input focus-none text-white w-full input-bordered rounded-l-full" />
+                  <div onClick={createNewProject} className="btn p-4 rounded-r-full btn-secondary rounded-none border-none"><svg className="w-full h-full" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#161212"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 12H20M12 4V20" stroke="#161212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg></div>
+                </div>
+                {
+                  projects?.length === 0
+                    ?
+                      <p>No projects created yet!</p>
+                    :
+                    <>
+                      {projects?.map(element => <Project key={element?.id} isSelected={(project?.name === element?.name)} project={element} />)}
+                    </>
+                }
+              </>
+              :
+              <div className="flex w-full py-4 justify-center items-center">
+                <h1 className="text-xl">No branch selected!</h1>
+              </div>
+
+          }
         </div>
       </div>
       <div className="absolute pointer-events-none w-screen h-screen left-0 bottom-0 flex justify-center items-end padding-y"><div class={`alert alert-success w-max h-max transition-all duration-1000 opacity-0 ${isSuccessAlertOpen && "opacity-100"}`}>

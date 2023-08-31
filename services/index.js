@@ -7,17 +7,27 @@ const revalidatePath = async (path) => {
 }
 
 const getBranches = async (user_id) => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/users/${user_id}/branches`, {headers: headers()});
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/users/${user_id}/branches`, {next: {revalidate: 0} , headers: headers()});
     const { data } = await response.json();
 
     return data || [];
+}
+
+const createBranch = async (user_id, name, description) => {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/users/${user_id}/branches`, {
+        method: "POST",
+        body: JSON.stringify({name, description}),
+        headers: headers()
+    });
+
+    const data = await response.json();
 }
 
 const getProjects = async (user_id, branch_id) => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/users/${user_id}/branches/${branch_id}/projects`, {headers: headers()});
     const { data } = await response.json();
     
-    return data;
+    return data || [];
 }
 
 const getTasks = async (user_id, branch_id, project_id) => {
@@ -43,6 +53,7 @@ const getLabels = async (user_id, branch_id, project_id, task_id) => {
 
 export {
     getBranches,
+    createBranch,
     getProjects,
     getTasks,
     getTodos,
