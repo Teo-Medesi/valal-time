@@ -7,7 +7,7 @@ const revalidatePath = async (path) => {
 }
 
 const getBranches = async (user_id) => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/users/${user_id}/branches`, {next: {revalidate: 0} , headers: headers()});
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/users/${user_id}/branches`, {next: {tags: ["branches"]}, headers: headers()});
     const { data } = await response.json();
 
     return data || [];

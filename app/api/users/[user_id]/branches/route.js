@@ -1,4 +1,5 @@
 import supabase from "@/lib/supabase-server.config";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 
 export async function GET(request, { params }) {

@@ -5,7 +5,7 @@ import { revalidatePath } from "@/services";
 import { useRef, useState } from "react"
 import Branch from "./Branch";
 
-const BranchSelectBox = ({ branches, revalidate }) => {
+const BranchSelectBox = ({ branches }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSuccessAlertOpen, setIsSuccessAlertOpen] = useState(false);
   const [newBranchName, setNewBranchName] = useState("");
@@ -29,7 +29,6 @@ const BranchSelectBox = ({ branches, revalidate }) => {
     });
 
     if (response.ok) {
-      revalidate();
       setIsSuccessAlertOpen(true);
       
       setTimeout(() => {
