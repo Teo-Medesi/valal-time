@@ -9,7 +9,7 @@ const Project = ({ project, isSelected }) => {
   }
 
   return (
-    <div onClick={handleClick} className={`btn btn-primary !text-black flex justify-between ${isSelected ? "btn-primary" : "btn-outline"}`}>
+    <div onClick={handleClick} className={`btn flex justify-between ${!isSelected && "btn-outline !text-black"}`}>
       <p>{project?.name}</p>
       <p>{project?.description}</p>
       <p>{project?.total_time_tracked || "0h 0m"}</p>

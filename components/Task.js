@@ -10,7 +10,7 @@ const Task = ({ task, isSelected }) => {
   }
 
   return (
-    <div onClick={handleClick} className={`btn btn-primary !text-black flex justify-between ${isSelected ? "btn-primary" : "btn-outline"}`}>
+    <div onClick={handleClick} className={`btn !text-black flex justify-between ${isSelected ? "btn !text-white" : "btn-outline"}`}>
       <p>{task?.name}</p>
       <p>{task?.description}</p>
       <p>{task?.total_time_tracked || "0h 0m"}</p>

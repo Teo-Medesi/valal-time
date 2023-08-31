@@ -14,10 +14,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" data-theme="forest">
-      <body className={`${inter.className} max-h-screen overflow-hidden`}>
+      <body className={`${inter.className} max-h-screen overflow-x-hidden`}>
         <SessionProvider>
           <BranchProvider>
-            <div className='flex min-h-screen'>
+            <div className='flex min-h-screen bg-black'>
               <DashboardMenu />
               <section className='w-full'>
                 <Navbar />

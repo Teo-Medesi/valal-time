@@ -53,8 +53,13 @@ const BranchProvider = ({ children }) => {
         setProjects(data || []);
     }
 
-    const getTasks = () => {
+    const getTasks = async () => {
         console.log("getting tasks")
+
+        const response = await fetch(`/api/users/${user.id}/branches/${selectedBranch?.id}/projects/${selectedProject.id}/tasks`);
+        const { data } = await response.json();
+
+        setTasks(data || []);
     }
 
     const getTodos = () => {
