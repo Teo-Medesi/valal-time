@@ -1,7 +1,6 @@
 import { BranchSelectBox, ProjectSelectBox, TaskSelectBox, TasksTodo, Timer } from "@/components";
 import supabase from "@/lib/supabase-server.config";
-import { getBranches } from "@/services";
-import { revalidatePath } from "next/cache";
+
 
 export default async function Home() {
   const { data: { user } } = await supabase.auth.getUser();

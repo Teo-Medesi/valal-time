@@ -41,13 +41,16 @@ const BranchProvider = ({ children }) => {
         const response = await fetch(`/api/users/${user.id}/branches`);
         const { data } = await response.json();
 
+        const main = data.find(element => element?.name === "Main");
+
         setBranches(data || []);
+        setSelectedBranch(main);
     }
 
     const getProjects = async () => {
         console.log("getting projects")
 
-        const response = await fetch(`/api/users/${user.id}/branches/${selectedBranch?.id}/projects`);
+        const response = await fetch(`/api/users/${user.id}/branches/${selectedBranch.id}/projects`);
         const { data } = await response.json();
 
         setProjects(data || []);
@@ -56,14 +59,19 @@ const BranchProvider = ({ children }) => {
     const getTasks = async () => {
         console.log("getting tasks")
 
-        const response = await fetch(`/api/users/${user.id}/branches/${selectedBranch?.id}/projects/${selectedProject.id}/tasks`);
+        const response = await fetch(`/api/users/${user.id}/branches/${selectedBranch.id}/projects/${selectedProject.id}/tasks`);
         const { data } = await response.json();
 
         setTasks(data || []);
     }
 
-    const getTodos = () => {
+    const getTodos = async () => {
         console.log("getting todos")
+
+        const response = await fetch(`/api/users/${user.id}/branches/${selectedBranch.id}/projects/${selectedProject.id}/tasks/${selectedTask.id}/todos`);
+        const { data } = await response.json();
+
+        setTodos(data || []);
     }
 
     // refresh local state (fetch new data / revalidate data)

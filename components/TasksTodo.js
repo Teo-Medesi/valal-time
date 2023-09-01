@@ -1,5 +1,11 @@
+"use client";
+import { useBranch } from "@/context/BranchContext"
+import NewTodo from "./NewTodo";
+import Todo from "./Todo";
 
-const TasksTodo = ({todos}) => {
+const TasksTodo = ({ }) => {
+  const { todos, setTodos } = useBranch();
+
   return (
     <div className="flex flex-col w-full">
       <div className="flex justify-between text-neutral-content">
@@ -8,10 +14,8 @@ const TasksTodo = ({todos}) => {
       </div>
       <div className="divider"></div>
       <div>
-        <div className="flex justify-between items-center w-full">
-          <input type="text" placeholder="create new to-do" className="input focus-none bg-transparent w-full" />
-          <input type="checkbox" className="checkbox checkbox-primary cursor-pointer checkbox-md" />
-        </div>
+        {todos?.map(element => <Todo todo={element} key={element?.id} />)}
+        <NewTodo />
       </div>
     </div>
   )

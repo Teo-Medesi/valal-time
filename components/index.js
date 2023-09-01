@@ -10,6 +10,7 @@ import Branch from "./Branch";
 import Task from "./Task";
 import Project from "./Project";
 import Todo from "./Todo";
+import NewTodo from "./NewTodo";
 import Label from "./Label";
 import Loading from "./Loading";
 
@@ -27,5 +28,6 @@ export {
     Project,
     Todo,
     Label,
-    Loading
+    Loading,
+    NewTodo,
 }

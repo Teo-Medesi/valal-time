@@ -1,3 +1,4 @@
+"use client";
 import { useBranch } from '@/context/BranchContext';
 import React from 'react'
 
