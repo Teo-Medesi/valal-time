@@ -1,4 +1,5 @@
 "use client"
+import moment from "moment";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useSession } from "./SessionContext";
 
@@ -18,10 +19,14 @@ const BranchProvider = ({ children }) => {
 
     const [todos, setTodos] = useState([])
 
-    const [timeEntriesByDay, setTimeEntriesByDay] = useState([]);
+    const [timeEntries, setTimeEntries] = useState([]);
     const [currentTimeEntry, setCurrentTimeEntry] = useState({});
 
-    const [selectedDate, setSelectedDate] = useState("");
+    const [selectedDate, setSelectedDate] = useState(moment());
+
+    useEffect(() => {
+        if (user?.id) getTimeEntries();
+    }, [selectedDate, user])
 
     // branches will be fetched on the initial render, while projects, tasks... will be fetched on demand -- that is when their parent element is selected
     useEffect(() => {
@@ -62,14 +67,14 @@ const BranchProvider = ({ children }) => {
 
 
     const getLastSelectedBranch = () => {
-        if (localStorage) return JSON.parse(localStorage.getItem("lastSelectedBranch"));
+        if (localStorage) return JSON.parse(localStorage?.getItem("lastSelectedBranch"));
 
         return null;
     }
 
     const getLastSelectedProject = () => {
         if (localStorage) {
-            const project = JSON.parse(localStorage.getItem("lastSelectedProject"));
+            const project = JSON.parse(localStorage?.getItem("lastSelectedProject"));
             if (project?.branch_id === selectedBranch?.id) return project
         }
         return null;
@@ -78,7 +83,7 @@ const BranchProvider = ({ children }) => {
 
     const getLastSelectedTask = () => {
         if (localStorage) {
-            const task = JSON.parse(localStorage.getItem("lastSelectedTask"));
+            const task = JSON.parse(localStorage?.getItem("lastSelectedTask"));
             if (task?.project_id === selectedProject?.id) return task;
         }
 
@@ -135,6 +140,13 @@ const BranchProvider = ({ children }) => {
         console.log(response)
     }
 
+    const getTimeEntries = async () => {
+        const response = await fetch(`/api/users/${user.id}/entries`);
+        const { data } = await response.json();
+
+        setTimeEntries(data || []);
+    }
+
     // refresh local state on demand (fetch new data / revalidate data)
     const revalidate = async (state) => {
         switch (state) {
@@ -174,7 +186,7 @@ const BranchProvider = ({ children }) => {
         setSelectedTask,
         todos,
         setTodos,
-        timeEntriesByDay,
+        timeEntries,
         currentTimeEntry,
         setCurrentTimeEntry,
         saveCurrentTimeEntry,

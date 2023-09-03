@@ -1,4 +1,4 @@
-import { BranchSelectBox, ProjectSelectBox, TaskSelectBox, TasksTodo, Timer, Date } from "@/components";
+import { BranchSelectBox, ProjectSelectBox, TaskSelectBox, TasksTodo, Timer, DateSelect, TimeEntries } from "@/components";
 import supabase from "@/lib/supabase-server.config";
 
 export default async function Home() {
@@ -9,11 +9,12 @@ export default async function Home() {
       <div className="w-full md:w-3/4 flex flex-col gap-16 items-center padding-y padding-x">
         <div className="flex flex-col gap-4 md:gap-0 md:flex-row justify-between w-full">
           <BranchSelectBox />
-          <Date />
+          <DateSelect />
           <ProjectSelectBox />
         </div>
         <Timer />
         <TaskSelectBox />
+        <TimeEntries />
         <TasksTodo />
       </div>
     </div>

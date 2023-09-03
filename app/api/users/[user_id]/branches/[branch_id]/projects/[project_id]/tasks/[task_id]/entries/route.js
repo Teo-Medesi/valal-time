@@ -14,7 +14,7 @@ export async function POST(request, { params }) {
 
   if (!body) return NextResponse.json({ error: "missing body" }, { status: 400 })
 
-  const { data, error } = await supabase.from("task_entries").insert({ start_time: body?.start_time, end_time: body?.end_time, task_id: params.task_id });
+  const { data, error } = await supabase.from("task_entries").insert({ start_time: body?.start_time, end_time: body?.end_time, task_id: params.task_id, user_id: params.user_id });
   if (error) return NextResponse.json({ error: error?.message }, { status: 400 });
 
   return NextResponse.json({ message: "successfully created new task entry" }, { status: 201 });
