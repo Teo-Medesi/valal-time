@@ -137,7 +137,7 @@ const BranchProvider = ({ children }) => {
             body: JSON.stringify(currentTimeEntry)
         });
 
-        console.log(response)
+        revalidate("entries");
     }
 
     const getTimeEntries = async () => {
@@ -166,6 +166,10 @@ const BranchProvider = ({ children }) => {
                 await getTodos();
                 break;
 
+            case "entries":
+                await getTimeEntries();
+                break;
+                
             default:
                 break;
         }
