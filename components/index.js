@@ -13,6 +13,7 @@ import Todo from "./Todo";
 import NewTodo from "./NewTodo";
 import Label from "./Label";
 import Loading from "./Loading";
+import DateSelect ./DateSelect./Date";
 
 export {
     DashboardMenu,
@@ -30,4 +31,5 @@ export {
     Label,
     Loading,
     NewTodo,
+    DateSelect
 }
