@@ -2,7 +2,7 @@ import supabase from "@/lib/supabase-server.config";
 import { NextResponse } from "next/server";
 
 export async function GET(request, { params }) {
-  const { data, error } = await supabase.from("task_entries").select("*").eq("task_id", params.task_id);
+  const { data, error } = await supabase.from("task_entries").select("*, task_id(*)").eq("task_id", params.task_id);
   if (error) return NextResponse.json({ error: error?.message }, { status: 400 });
 
   return NextResponse.json({ message: "successfully retrieved task entries", data }, { status: 200 });
