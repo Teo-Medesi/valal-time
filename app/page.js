@@ -1,6 +1,5 @@
-import { BranchSelectBox, ProjectSelectBox, TaskSelectBox, TasksTodo, Timer } from "@/components";
+import { BranchSelectBox, ProjectSelectBox, TaskSelectBox, TasksTodo, Timer, Date } from "@/components";
 import supabase from "@/lib/supabase-server.config";
-
 
 export default async function Home() {
   const { data: { user } } = await supabase.auth.getUser();
@@ -10,6 +9,7 @@ export default async function Home() {
       <div className="w-full md:w-3/4 flex flex-col gap-16 items-center padding-y padding-x">
         <div className="flex flex-col gap-4 md:gap-0 md:flex-row justify-between w-full">
           <BranchSelectBox />
+          <Date />
           <ProjectSelectBox />
         </div>
         <Timer />

@@ -21,6 +21,8 @@ const BranchProvider = ({ children }) => {
     const [timeEntriesByDay, setTimeEntriesByDay] = useState([]);
     const [currentTimeEntry, setCurrentTimeEntry] = useState({});
 
+    const [selectedDate, setSelectedDate] = useState("");
+
     // branches will be fetched on the initial render, while projects, tasks... will be fetched on demand -- that is when their parent element is selected
     useEffect(() => {
         if (user?.id && branches?.length === 0) getBranches();
@@ -176,6 +178,8 @@ const BranchProvider = ({ children }) => {
         currentTimeEntry,
         setCurrentTimeEntry,
         saveCurrentTimeEntry,
+        selectedDate,
+        setSelectedDate,
         revalidate
     }
 
