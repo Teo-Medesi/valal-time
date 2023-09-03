@@ -18,63 +18,109 @@ const BranchProvider = ({ children }) => {
 
     const [todos, setTodos] = useState([])
 
+    const [timeEntriesByDay, setTimeEntriesByDay] = useState([]);
+    const [currentTimeEntry, setCurrentTimeEntry] = useState({});
+
+    // branches will be fetched on the initial render, while projects, tasks... will be fetched on demand -- that is when their parent element is selected
     useEffect(() => {
         if (user?.id && branches?.length === 0) getBranches();
     }, [user, branches])
 
     useEffect(() => {
-        if (selectedBranch?.id) getProjects();
+        if (selectedBranch?.id) {
+            if (localStorage) localStorage.setItem("lastSelectedBranch", JSON.stringify(selectedBranch));
+
+            setSelectedProject({});
+            setSelectedTask({});
+
+            getProjects();
+        }
     }, [selectedBranch])
 
     useEffect(() => {
-        if (selectedProject?.id) getTasks();
+        if (selectedProject?.id) {
+            if (localStorage) localStorage.setItem("lastSelectedProject", JSON.stringify(selectedProject));
+
+            setSelectedTask({});
+            getTasks();
+        }
     }, [selectedProject])
 
     useEffect(() => {
-        if (selectedTask?.id) getTodos();
+        if (selectedTask?.id) {
+            if (localStorage) localStorage.setItem("lastSelectedTask", JSON.stringify(selectedTask));
+
+            getTodos();
+        }
     }, [selectedTask])
 
 
-    const getBranches = async () => {
-        console.log("getting branches")
+    const getLastSelectedBranch = () => {
+        if (localStorage) return JSON.parse(localStorage.getItem("lastSelectedBranch"));
 
+        return null;
+    }
+
+    const getLastSelectedProject = () => {
+        if (localStorage) {
+            const project = JSON.parse(localStorage.getItem("lastSelectedProject"));
+            if (project?.branch_id === selectedBranch?.id) return project
+        }
+        return null;
+    }
+
+
+    const getLastSelectedTask = () => {
+        if (localStorage) {
+            const task = JSON.parse(localStorage.getItem("lastSelectedTask"));
+            if (task?.project_id === selectedProject?.id) return task;
+        }
+
+        return null;
+    }
+
+    const getBranches = async () => {
         const response = await fetch(`/api/users/${user.id}/branches`);
         const { data } = await response.json();
 
         const main = data.find(element => element?.name === "Main");
 
         setBranches(data || []);
-        setSelectedBranch(main);
+        const lastSelectedBranch = getLastSelectedBranch();
+
+        setSelectedBranch(lastSelectedBranch || main);
     }
 
     const getProjects = async () => {
-        console.log("getting projects")
-
         const response = await fetch(`/api/users/${user.id}/branches/${selectedBranch.id}/projects`);
         const { data } = await response.json();
 
         setProjects(data || []);
+
+        const lastSelectedProject = getLastSelectedProject();
+        if (lastSelectedProject) setSelectedProject(lastSelectedProject)
+
+        setSelectedTask({});
     }
 
     const getTasks = async () => {
-        console.log("getting tasks")
-
         const response = await fetch(`/api/users/${user.id}/branches/${selectedBranch.id}/projects/${selectedProject.id}/tasks`);
         const { data } = await response.json();
 
         setTasks(data || []);
+
+        const lastSelectedTask = getLastSelectedTask();
+        if (lastSelectedTask) setSelectedTask(lastSelectedTask)
     }
 
     const getTodos = async () => {
-        console.log("getting todos")
-
         const response = await fetch(`/api/users/${user.id}/branches/${selectedBranch.id}/projects/${selectedProject.id}/tasks/${selectedTask.id}/todos`);
         const { data } = await response.json();
 
         setTodos(data || []);
     }
 
-    // refresh local state (fetch new data / revalidate data)
+    // refresh local state on demand (fetch new data / revalidate data)
     const revalidate = async (state) => {
         switch (state) {
             case "branches":
@@ -113,6 +159,9 @@ const BranchProvider = ({ children }) => {
         setSelectedTask,
         todos,
         setTodos,
+        timeEntriesByDay,
+        currentTimeEntry,
+        setCurrentTimeEntry,
         revalidate
     }
 
