@@ -54,6 +54,10 @@ const BranchProvider = ({ children }) => {
         }
     }, [selectedTask])
 
+    useEffect(() => {
+        if (currentTimeEntry?.end_time) saveCurrentTimeEntry();
+    }, [currentTimeEntry])
+
 
     const getLastSelectedBranch = () => {
         if (localStorage) return JSON.parse(localStorage.getItem("lastSelectedBranch"));
@@ -120,6 +124,15 @@ const BranchProvider = ({ children }) => {
         setTodos(data || []);
     }
 
+    const saveCurrentTimeEntry = async () => {
+        const response = await fetch(`/api/users/${user.id}/branches/${selectedBranch.id}/projects/${selectedProject.id}/tasks/${selectedTask.id}/entries`, {
+            method: "POST",
+            body: JSON.stringify(currentTimeEntry)
+        });
+
+        console.log(response)
+    }
+
     // refresh local state on demand (fetch new data / revalidate data)
     const revalidate = async (state) => {
         switch (state) {
@@ -162,6 +175,7 @@ const BranchProvider = ({ children }) => {
         timeEntriesByDay,
         currentTimeEntry,
         setCurrentTimeEntry,
+        saveCurrentTimeEntry,
         revalidate
     }
 

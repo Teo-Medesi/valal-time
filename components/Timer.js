@@ -4,7 +4,7 @@ import { useStopwatch } from "react-timer-hook";
 
 const Timer = () => {
     const { isRunning, start: start_timer, reset: reset_timer, pause: pause_timer, hours, minutes, seconds } = useStopwatch({ autoStart: false });
-    const { selectedTask } = useBranch();
+    const { selectedTask, currentTimeEntry, setCurrentTimeEntry } = useBranch();
 
     const reset = () => {
         reset_timer(undefined, false);
@@ -12,10 +12,19 @@ const Timer = () => {
 
     const stop = () => {
         reset_timer(undefined, false);
+
+        setCurrentTimeEntry(current => { return { ...current, end_time: new Date() } });
     }
 
     const start = () => {
         start_timer();
+
+        const newTimeEntry = {
+            start_time: new Date(),
+            task_id: selectedTask.id,
+        }
+
+        setCurrentTimeEntry(newTimeEntry);
     }
 
     const pause = () => {
