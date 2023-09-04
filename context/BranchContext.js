@@ -24,6 +24,8 @@ const BranchProvider = ({ children }) => {
 
     const [selectedDate, setSelectedDate] = useState(moment());
 
+    const [isTimerRunning, setIsTimerRunning] = useState(false);
+
     useEffect(() => {
         if (user?.id) getTimeEntries();
     }, [selectedDate, user])
@@ -137,6 +139,7 @@ const BranchProvider = ({ children }) => {
             body: JSON.stringify(currentTimeEntry)
         });
 
+        setCurrentTimeEntry({});
         revalidate("entries");
     }
 
@@ -198,6 +201,8 @@ const BranchProvider = ({ children }) => {
         saveCurrentTimeEntry,
         selectedDate,
         setSelectedDate,
+        isTimerRunning,
+        setIsTimerRunning,
         revalidate
     }
 

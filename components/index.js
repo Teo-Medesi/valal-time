@@ -15,6 +15,7 @@ import Label from "./Label";
 import Loading from "./Loading";
 import DateSelect from "./DateSelect";
 import TimeEntries from "./TimeEntries";
+import ActiveTimeEntry from "./ActiveTimeEntry";
 
 export {
     DashboardMenu,
@@ -33,5 +34,6 @@ export {
     Loading,
     NewTodo,
     DateSelect,
-    TimeEntries
+    TimeEntries,
+    ActiveTimeEntry
 }
