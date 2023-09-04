@@ -144,7 +144,9 @@ const BranchProvider = ({ children }) => {
         const response = await fetch(`/api/users/${user.id}/entries`);
         const { data } = await response.json();
 
-        setTimeEntries(data || []);
+        const entries = data?.filter(element => moment(element.start_time).isSame(moment(selectedDate), "day"));
+
+        setTimeEntries(entries || []);
     }
 
     // refresh local state on demand (fetch new data / revalidate data)
@@ -169,7 +171,7 @@ const BranchProvider = ({ children }) => {
             case "entries":
                 await getTimeEntries();
                 break;
-                
+
             default:
                 break;
         }
