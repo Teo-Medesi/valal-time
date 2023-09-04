@@ -196,6 +196,7 @@ const BranchProvider = ({ children }) => {
         todos,
         setTodos,
         timeEntries,
+        setTimeEntries,
         currentTimeEntry,
         setCurrentTimeEntry,
         saveCurrentTimeEntry,
