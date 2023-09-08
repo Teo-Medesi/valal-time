@@ -2,8 +2,11 @@ import Logo from "@/public/logo.svg"
 import Image from "next/image"
 import desktop from "@/public/mockups/desktop.png"
 import phone from "@/public/mockups/mobile.png"
+import supabase from "@/lib/supabase-server.config"
+import Link from "next/link"
 
 export default async function Home() {
+  const { data: {user}} = await supabase.auth.getUser();
 
   return (
     <div className="flex absolute left-0 top-0 justify-center items-center w-full min-h-screen">
@@ -24,11 +27,11 @@ export default async function Home() {
 
         <div className="flex flex-col w-full items-center gap-12">
           <div className="flex flex-col gap-2">
-            <h1 className="text-4xl bg-gradient-to-r from-primary to-secondary text-gradient">Don't Waste Time</h1>
+            <h1 className="text-4xl bg-gradient-to-r from-primary to-secondary text-gradient">{!user ? "Don't Waste Time" : `Welcome Back!`}</h1>
             <p className="text-neutral">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consequuntur pariatur explicabo omnis quam vel animi optio velit voluptates ex assumenda.</p>
           </div>
 
-          <button className="animate-pulse btn btn-secondary bg-gradient-to-r from-secondary to-primary w-max">Start Tracking Time Now</button>
+          <Link href={user ? "/dashboard" : "/sign-up"} className="animate-pulse btn btn-secondary bg-gradient-to-r from-secondary to-primary w-max">{!user ? "Start Tracking Time Now" : "Go To Dashboard"}</Link>
 
         </div>
       </div>

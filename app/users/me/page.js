@@ -8,7 +8,7 @@ export default async function Me(request) {
 
     
     return (
-        <div className="w-full h-full flex flex-col gap-8 justify-center items-center">
+        <div className="w-full h-full absolute left-0 top-0 flex flex-col gap-8 justify-center items-center">
             <p className="">{user?.email}</p>
             <SignOutButton />
         </div>
