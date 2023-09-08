@@ -4,7 +4,8 @@ export default async function Home() {
 
   return (
     <div className="flex absolute left-0 top-0 justify-center items-center w-full min-h-screen">
-      <div className="flex hero px-4 flex-col gap-16 text-center">
+      <div className="flex hero px-4 md:w-1/2 flex-col gap-20 text-center">
+
         <svg className="animate-pulse" width="121" height="167" viewBox="0 0 121 167" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M1 1.5H119M1.5 2L1.5 26M119.5 1V25M1 165.5H119M119.5 142V166M1.5 142L1.5 166M1.60302 25.3959L119.104 142.897M119.354 24.3536L62.3536 81.3536M1.64645 142.646L58.6464 85.6464" stroke="url(#paint0_linear_1_37)" stroke-width="2" />
           <defs>
@@ -14,11 +15,16 @@ export default async function Home() {
             </linearGradient>
           </defs>
         </svg>
-        <div className="flex flex-col gap-2">
-          <h1 className="text-4xl bg-gradient-to-r from-primary to-secondary text-gradient">Don't Waste Time</h1>
-          <p className="text-neutral">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consequuntur pariatur explicabo omnis quam vel animi optio velit voluptates ex assumenda.</p>
+
+        <div className="flex flex-col w-full items-center gap-12">
+          <div className="flex flex-col gap-2">
+            <h1 className="text-4xl bg-gradient-to-r from-primary to-secondary text-gradient">Don't Waste Time</h1>
+            <p className="text-neutral">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consequuntur pariatur explicabo omnis quam vel animi optio velit voluptates ex assumenda.</p>
+          </div>
+
+          <button className="btn btn-secondary bg-gradient-to-r from-secondary to-primary w-max">Start Tracking Time Now</button>
+
         </div>
-        <button className="btn btn-secondary bg-gradient-to-r from-secondary to-primary">Start Tracking Time Now</button>
       </div>
     </div>
   )
