@@ -131,7 +131,11 @@ const BranchProvider = ({ children }) => {
         const response = await fetch(`/api/users/${user.id}/branches/${selectedBranch.id}/projects/${selectedProject.id}/tasks/${selectedTask.id}/todos`);
         const { data } = await response.json();
 
-        setTodos(data || []);
+        const todos = data.filter(todo => todo.is_complete === false);
+        const archivedTodos = data.filter(todo => todo.is_complete === true);
+        
+        setTodos(todos || []);
+        setArchivesTodos(archivedTodos || []);
     }
 
     const saveCurrentTimeEntry = async () => {
@@ -196,6 +200,8 @@ const BranchProvider = ({ children }) => {
         setSelectedTask,
         todos,
         setTodos,
+        archivedTodos,
+        setArchivesTodos,
         timeEntries,
         setTimeEntries,
         currentTimeEntry,
