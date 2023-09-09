@@ -18,6 +18,7 @@ const BranchProvider = ({ children }) => {
     const [selectedTask, setSelectedTask] = useState({});
 
     const [todos, setTodos] = useState([])
+    const [archivedTodos, setArchivesTodos] = useState([]);
 
     const [timeEntries, setTimeEntries] = useState([]);
     const [currentTimeEntry, setCurrentTimeEntry] = useState({});
