@@ -28,7 +28,7 @@ export default async function Home() {
         <div className="flex flex-col w-full items-center gap-12">
           <div className="flex flex-col gap-2">
             <h1 className="text-4xl bg-gradient-to-r from-primary to-secondary text-gradient">{!user ? "Don't Waste Time" : `Welcome Back!`}</h1>
-            <p className="text-neutral">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consequuntur pariatur explicabo omnis quam vel animi optio velit voluptates ex assumenda.</p>
+            <p className="text-neutral">Valal: Your Passport to a More Productive, Balanced You, because time is the key to balance and productivity.</p>
           </div>
 
           <Link href={user ? "/dashboard" : "/sign-up"} className="animate-pulse btn btn-secondary bg-gradient-to-r from-secondary to-primary w-max">{!user ? "Start Tracking Time Now" : "Go To Dashboard"}</Link>
